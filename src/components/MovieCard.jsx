@@ -1,10 +1,20 @@
-import React from 'react'
+import React from 'react';
 
-const MovieCard = () => {
+const MovieCard = ({ imageUrl, name }) => {
   return (
-    <div className='mt-[20px] h-[45vh] w-[200px] bg-center bg-cover rounded-xl hover:cursor-pointer hover:scale-105 duration-300' style={{backgroundImage: `url(https://images-cdn.ubuy.co.in/668f03f763dc6918441092c0-avengers-infinity-war-movie-poster.jpg)`}}>
-    </div>
-  )
-}
+    <div className="flex flex-col items-center">
+      {/* Movie Poster */}
+      <div
+        className="relative h-[45vh] w-[200px] bg-center bg-cover bg-no-repeat rounded-xl hover:cursor-pointer hover:scale-105 duration-300 shadow-lg"
+        style={{ backgroundImage: `url(${imageUrl})` }}
+      ></div>
 
-export default MovieCard
+      {/* Movie Title */}
+      <div className="mt-3 w-[200px] text-center bg-gray-800 text-white font-semibold text-lg p-2 rounded-md shadow-md">
+        {name}
+      </div>
+    </div>
+  );
+};
+
+export default MovieCard;
