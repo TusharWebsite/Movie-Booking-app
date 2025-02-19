@@ -3,21 +3,13 @@ import MovieCard from "./MovieCard";
 import axios from "axios";
 import Pagination from "./Pagination";
 
-const Movies = () => {
+const Movies = ({
+  watchlist,
+  handleAddToWatchlist,
+  handleRemoveFromWatchlist,
+}) => {
   const [movies, setMovies] = useState([]);
   const [pageNo, setPageNo] = useState(1);
-  const [watchlist, setWatchlist] = useState([]);
-
-  const handleAddtoWatchlist = (movie) => {
-    const newWatchlist = [...watchlist, movie];
-    setWatchlist(newWatchlist);
-    console.log(newWatchlist);
-  };
-
-  const handleRemovetoWatchlist = (movie) => {
-    const updatedWatchlist = watchlist.filter((m) => m.id !== movie.id);
-    setWatchlist(updatedWatchlist);
-  };
 
   const handleNext = () => {
     setPageNo(pageNo + 1);
@@ -55,8 +47,8 @@ const Movies = () => {
               imageUrl={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               name={movie.original_title}
               movie={movie}
-              handleAddtoWatchlist={handleAddtoWatchlist}
-              handleRemovetoWatchlist={handleRemovetoWatchlist}
+              handleAddtoWatchlist={handleAddToWatchlist}
+              handleRemovetoWatchlist={handleRemoveFromWatchlist}
               watchlist={watchlist}
             />
           ))
