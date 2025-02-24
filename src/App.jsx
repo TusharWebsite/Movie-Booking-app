@@ -4,18 +4,34 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Watchlist from "./components/Watchlist";
 import Banner from "./components/Banner";
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
 function App() {
   const [watchlist, setWatchlist] = useState([]);
 
   const handleAddToWatchlist = (movie) => {
-    setWatchlist([...watchlist, movie]);
+    const updatedWatchlist = [...watchlist, movie];
+    setWatchlist(updatedWatchlist);
+    localStorage.setItem("movieApp", JSON.stringify(updatedWatchlist)); // Save after updating state
   };
 
   const handleRemoveFromWatchlist = (movie) => {
-    setWatchlist(watchlist.filter((m) => m.id !== movie.id));
+    const updatedWatchlist = watchlist.filter((m) => m.id !== movie.id);
+    setWatchlist(updatedWatchlist);
+    localStorage.setItem("movieApp", JSON.stringify(updatedWatchlist)); // Update local storage
   };
+
+  useEffect(() => {
+    const watchlistLocal = localStorage.getItem("movieApp");
+    if (watchlistLocal) {
+      setWatchlist(JSON.parse(watchlistLocal));
+    }
+  }, []); // Empty dependency array (runs once on mount)
+
+    // Delete Function
+    const handleDelete = (id) => {
+      setWatchlist(watchlist.filter((movie) => movie.id !== id));
+    };
 
   return (
     <BrowserRouter>
@@ -26,7 +42,7 @@ function App() {
           element={
             <>
               <Banner />
-              <Movies 
+              <Movies
                 watchlist={watchlist}
                 handleAddToWatchlist={handleAddToWatchlist}
                 handleRemoveFromWatchlist={handleRemoveFromWatchlist}
@@ -34,7 +50,7 @@ function App() {
             </>
           }
         />
-        <Route path="/watchlist" element={<Watchlist watchlist={watchlist} />} />
+        <Route path="/watchlist" element={<Watchlist watchlist={watchlist} handleDelete={handleDelete} />} />
       </Routes>
     </BrowserRouter>
   );
