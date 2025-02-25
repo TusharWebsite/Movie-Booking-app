@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const Watchlist = ({ watchlist, handleDelete }) => {
+import { FaLongArrowAltUp, FaLongArrowAltDown } from "react-icons/fa";
+const Watchlist = ({ watchlist, handleDelete,setWatchlist }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filtered Movies based on search
@@ -10,6 +10,19 @@ const Watchlist = ({ watchlist, handleDelete }) => {
     movie.original_title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const sortIncrease = ()=>{
+    let sortIncreasing = watchlist.sort((movieA,movieB)=>{
+      return movieA.vote_average - movieB.vote_average
+    })
+    setWatchlist([...sortIncreasing])
+  }
+
+  const sortDecrease = ()=>{
+    let sortDecreasing = watchlist.sort((movieA,movieB)=>{
+      return movieB.vote_average - movieA.vote_average
+    })
+    setWatchlist([...sortDecreasing])
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-900 text-white rounded-lg shadow-lg mt-[50px]">
@@ -40,7 +53,15 @@ const Watchlist = ({ watchlist, handleDelete }) => {
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="py-3 px-4 text-left">Movie</th>
-              <th className="py-3 px-4">Rating</th>
+              <th className="py-3 px-4 flex justify-center items-center">
+                <div onClick={sortDecrease}>
+                  <FaLongArrowAltDown />
+                </div>
+                Rating
+                <div onClick={sortIncrease}>
+                  <FaLongArrowAltUp />
+                </div>
+              </th>
               <th className="py-3 px-4">Popularity</th>
               <th className="py-3 px-4">Genre</th>
               <th className="py-3 px-4">Action</th>
@@ -59,7 +80,9 @@ const Watchlist = ({ watchlist, handleDelete }) => {
                       alt={movie.original_title}
                       className="w-16 h-24 rounded-md object-cover"
                     />
-                    <span className="font-semibold">{movie.original_title}</span>
+                    <span className="font-semibold">
+                      {movie.original_title}
+                    </span>
                   </td>
                   <td className="text-center">{movie.vote_average}</td>
                   <td className="text-center">{movie.popularity}</td>
